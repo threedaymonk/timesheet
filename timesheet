@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+IDLENESS_THRESHOLD = 3 * 60 * 1000
+
+def current_window
+  `xdotool getactivewindow getwindowname`
+end
+
+def idle_time
+  `xprintidle`.to_i(10)
+end
+
+def idle?
+  idle_time > IDLENESS_THRESHOLD
+end
+
+last_state = nil
+
+loop do
+  if idle?
+    state = "idle"
+  else
+    state = current_window
+  end
+  if state != last_state
+    $stdout.puts "%s %s" % [Time.now.strftime("%Y-%m-%d %H:%M"), state]
+    $stdout.flush
+    last_state = state
+  end
+  sleep 30
+end
