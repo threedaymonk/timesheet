@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-IDLENESS_THRESHOLD = 3 * 60 * 1000
+POLLING_INTERVAL = 30 # sec
+IDLENESS_THRESHOLD = 2 * POLLING_INTERVAL * 1000 # msec
 
 def current_window
   `xdotool getactivewindow getwindowname`
@@ -27,5 +28,5 @@ loop do
     $stdout.flush
     last_state = state
   end
-  sleep 30
+  sleep POLLING_INTERVAL
 end
